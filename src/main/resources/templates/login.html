@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="~{base::layout(~{::section})}">
+<head>
+    <meta charset="ISO-8859-1">
+    <title>Login</title>
+    <section>
+    <style>
+        body {
+            background: #f8f9fa;
+        }
+        .login-container {
+            background: #ffffff;
+            padding: 40px;
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+        }
+        .form-control {
+            border-radius: 0px;
+            padding: 20px;
+            font-size: 16px;
+        }
+        .btn-primary {
+            border-radius: 0px;
+            padding: 8px 16px;
+        }
+        .form-group label {
+            font-weight: bold;
+        }
+        .social-login a {
+            font-size: 18px;
+            width: 45px;
+            height: 45px;
+            background: #f8f9fa;
+            display: inline-block;
+            line-height: 45px;
+            border-radius: 50%;
+            margin: 0 10px;
+        }
+        .social-login a:hover {
+            background-color: #007bff;
+            color: #fff;
+        }
+        .login-container h3 {
+            font-weight: bold;
+        }
+        .login-links {
+            display: flex;
+            justify-content: space-between;
+            font-size: 14px;
+        }
+        .login-links a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        .login-links a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <section>
+        <div class="container-fluid bg-light py-5">
+            <div class="container py-5">
+                <div class="row justify-content-center">
+                    <div class="col-lg-5 login-container">
+                        <h3 class="text-center mb-4">Login</h3>
+                        <form action="/login" method="post">
+                            <div class="form-group">
+                                <label for="username">Email</label>
+                                <input type="email" id="username" class="form-control" name="username" placeholder="Enter your email" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="password">Password</label>
+                                <input type="password" id="password" class="form-control" name="password" placeholder="Enter your password" required>
+                            </div>
+                            <button type="submit" class="btn btn-primary btn-block">Login</button>
+                        </form>
+                        <div class="login-links text-center mt-3">
+                            <a href="/forgot-password">Forgot Password?</a>
+                            <a href="#" class="text-decoration-none">Create one</a>
+                        </div>
+                        <div class="social-login text-center mt-4">
+                            <h5>Or login with</h5>
+                            <a href="#"><i class="fab fa-google"></i></a>
+                            <a href="#"><i class="fab fa-facebook-f"></i></a>
+                            <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</body>
+</html>
