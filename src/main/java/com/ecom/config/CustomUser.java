@@ -8,7 +8,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import com.ecom.model.UserDtls;
 
+
 public class CustomUser implements UserDetails {
+
 	private UserDtls user;
 
 	public CustomUser(UserDtls user) {
@@ -24,13 +26,11 @@ public class CustomUser implements UserDetails {
 
 	@Override
 	public String getPassword() {
-		// TODO Auto-generated method stub
 		return user.getPassword();
 	}
 
 	@Override
 	public String getUsername() {
-		// TODO Auto-generated method stub
 		return user.getEmail();
 	}
 
@@ -41,7 +41,7 @@ public class CustomUser implements UserDetails {
 
 	@Override
 	public boolean isAccountNonLocked() {
-		return true;
+		return user.getAccountNonLocked();
 	}
 
 	@Override
@@ -51,7 +51,7 @@ public class CustomUser implements UserDetails {
 
 	@Override
 	public boolean isEnabled() {
-		return true;
+		return user.getIsEnable();
 	}
 
 }

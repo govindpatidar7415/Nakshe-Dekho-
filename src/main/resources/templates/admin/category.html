@@ -2,13 +2,17 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org"
 	th:replace="admin/base::layout(~{::section})">
 
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+</head>
 <body>
 	<section>
 		<div class="container-fluid p-5 mt-5">
 			<div class="row">
 				<div class="col-md-3">
 					<div class="card card-sh">
-					<div class="card-header text-center ">
+						<div class="card-header text-center ">
 							<p class="fs-4">Add Category</p>
 							<th:block th:if="${session.succMsg}">
 								<p class="text-success fw-bold">[[${session.succMsg}]]</p>
@@ -21,7 +25,6 @@
 							</th:block>
 
 						</div>
-						
 						<div class="card-body">
 							<form action="/admin/saveCategory" method="post"
 								enctype="multipart/form-data">
@@ -57,8 +60,7 @@
 						</div>
 					</div>
 				</div>
-				
-				
+
 				<div class="col-md-8">
 					<div class="card card-sh">
 						<div class="card-header text-center fs-4">Category Details</div>
@@ -80,7 +82,7 @@
 										<td>[[${cat.isActive}]]</td>
 										<td><img
 											th:src="@{'/img/category_img/'+${cat.imageName}}"
-											width="100px" height="100px"></td>
+											width="50px" height="50px"></td>
 										<td><a th:href="@{'/admin/loadEditCategory/'+${cat.id}}"
 											class="btn btn-primary btn-sm"><i
 												class="fa-solid fa-pen-to-square  fa-1x"></i> Edit </a> <a
@@ -91,9 +93,36 @@
 
 								</tbody>
 							</table>
+
 							<div class="row">
 								<div class="col-md-4">Total Category :
 									[[${totalElements}]]</div>
+								<div class="col-md-6">
+
+									<nav aria-label="Page navigation example">
+										<ul class="pagination">
+											<li class="page-item"
+												th:classappend="${isFirst} ? 'disabled':''"><a
+												class="page-link"
+												th:href="@{'/admin/category?pageNo='+${pageNo-1}}"
+												aria-label="Previous"> <span aria-hidden="true">&laquo;</span>
+											</a></li>
+
+											<li th:each="i:${#numbers.sequence(1,totalPages)}"
+												class="page-item"
+												th:classappend="${pageNo+1==i}?'active':''" ]]><a
+												class="page-link"
+												th:href="@{'/admin/category?pageNo='+${i-1}}">[[${i}]]</a></li>
+
+											<li class="page-item"
+												th:classappend="${isLast} ? 'disabled':''"><a
+												class="page-link"
+												th:href="@{'/admin/category?pageNo='+${pageNo+1}}"
+												aria-label="Next"> <span aria-hidden="true">&raquo;</span>
+											</a></li>
+										</ul>
+									</nav>
+								</div>
 
 							</div>
 						</div>
@@ -104,6 +133,5 @@
 			</div>
 		</div>
 	</section>
-
 </body>
 </html>

@@ -1,13 +1,23 @@
 package com.wipro.demo.services.impl;
 
+import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
+import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ObjectUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.ecom.model.UserDtls;
+import com.ecom.util.AppConstant;
 import com.wipro.demo.repository.UserRepository;
 import com.wipro.demo.services.UserService;
 
@@ -22,13 +32,17 @@ public class UserServiceImpl implements UserService {
 
     // Save Normal User
     @Override
-    public UserDtls saveUser(UserDtls user) {
-        user.setRole("ROLE_USER");
-        user.setIsEnable(true);
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        return userRepository.save(user);
-    }
+	public UserDtls saveUser(UserDtls user) {
+		user.setRole("ROLE_USER");
+		user.setIsEnable(true);
+		user.setAccountNonLocked(true);
+		user.setFailedAttempt(0);
 
+		String encodePassword = passwordEncoder.encode(user.getPassword());
+		user.setPassword(encodePassword);
+		UserDtls saveUser = userRepository.save(user);
+		return saveUser;
+	}
     // Save Admin User
     @Override
     public UserDtls saveAdmin(UserDtls user) {
@@ -47,28 +61,51 @@ public class UserServiceImpl implements UserService {
     public List<UserDtls> getUsers(String role) {
         return userRepository.findByRole(role);
     }
-
-	@Override
+    @Override
 	public Boolean updateAccountStatus(Integer id, Boolean status) {
-		// TODO Auto-generated method stub
-		return null;
+
+		Optional<UserDtls> findByuser = userRepository.findById(id);
+
+		if (findByuser.isPresent()) {
+			UserDtls userDtls = findByuser.get();
+			userDtls.setIsEnable(status);
+			userRepository.save(userDtls);
+			return true;
+		}
+
+		return false;
 	}
 
-	@Override
+    @Override
 	public void increaseFailedAttempt(UserDtls user) {
-		// TODO Auto-generated method stub
-		
+		int attempt = user.getFailedAttempt() + 1;
+		user.setFailedAttempt(attempt);
+		userRepository.save(user);
 	}
 
 	@Override
 	public void userAccountLock(UserDtls user) {
-		// TODO Auto-generated method stub
-		
+		user.setAccountNonLocked(false);
+		user.setLockTime(new Date());
+		userRepository.save(user);
 	}
 
 	@Override
 	public boolean unlockAccountTimeExpired(UserDtls user) {
-		// TODO Auto-generated method stub
+
+		long lockTime = user.getLockTime().getTime();
+		long unLockTime = lockTime + AppConstant.UNLOCK_DURATION_TIME;
+
+		long currentTime = System.currentTimeMillis();
+
+		if (unLockTime < currentTime) {
+			user.setAccountNonLocked(true);
+			user.setFailedAttempt(0);
+			user.setLockTime(null);
+			userRepository.save(user);
+			return true;
+		}
+
 		return false;
 	}
 
@@ -80,32 +117,62 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public void updateUserResetToken(String email, String resetToken) {
-		// TODO Auto-generated method stub
-		
+		UserDtls findByEmail = userRepository.findByEmail(email);
+		findByEmail.setResetToken(resetToken);
+		userRepository.save(findByEmail);
 	}
 
 	@Override
 	public UserDtls getUserByToken(String token) {
-		// TODO Auto-generated method stub
-		return null;
+		return userRepository.findByResetToken(token);
 	}
 
 	@Override
 	public UserDtls updateUser(UserDtls user) {
-		// TODO Auto-generated method stub
-		return null;
+		return userRepository.save(user);
 	}
+
 
 	@Override
 	public UserDtls updateUserProfile(UserDtls user, MultipartFile img) {
-		// TODO Auto-generated method stub
-		return null;
+
+		UserDtls dbUser = userRepository.findById(user.getId()).get();
+
+		if (!img.isEmpty()) {
+			dbUser.setProfileImage(img.getOriginalFilename());
+		}
+
+		if (!ObjectUtils.isEmpty(dbUser)) {
+
+			dbUser.setName(user.getName());
+			dbUser.setMobileNumber(user.getMobileNumber());
+			dbUser.setAddress(user.getAddress());
+			dbUser.setCity(user.getCity());
+			dbUser.setState(user.getState());
+			dbUser.setPincode(user.getPincode());
+			dbUser = userRepository.save(dbUser);
+		}
+
+		try {
+			if (!img.isEmpty()) {
+				File saveFile = new ClassPathResource("static/img").getFile();
+
+				Path path = Paths.get(saveFile.getAbsolutePath() + File.separator + "profile_img" + File.separator
+						+ img.getOriginalFilename());
+
+//			System.out.println(path);
+				Files.copy(img.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return dbUser;
 	}
 
 	@Override
 	public Boolean existsEmail(String email) {
-		// TODO Auto-generated method stub
-		return null;
+		return userRepository.existsByEmail(email);
 	}
 
     // Other methods can remain as they are

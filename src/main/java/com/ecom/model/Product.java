@@ -1,4 +1,5 @@
 package com.ecom.model;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -16,8 +17,13 @@ import lombok.Setter;
 public class Product {
 
     private Integer id;
-    private String title;
-    private String description;
+    
+	@Column(length = 500)
+	private String title;
+
+	@Column(length = 5000)
+	private String description;
+
     private String category;
     private Double price;
     private int stock;

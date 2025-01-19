@@ -11,6 +11,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.data.domain.Page;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -25,9 +26,11 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.ecom.model.Category;
 import com.ecom.model.Product;
+import com.ecom.model.Project;
 import com.ecom.model.UserDtls;
 import com.wipro.demo.services.CategoryService;
 import com.wipro.demo.services.ProductService;
+import com.wipro.demo.services.ProjectService;
 import com.wipro.demo.services.UserService;
 
 import jakarta.servlet.http.HttpSession;
@@ -41,10 +44,12 @@ public class AdminController {
 	@Autowired
 	private ProductService productService;
 
-	
 	@Autowired
 	private UserService userService;
-	
+
+	@Autowired
+	private ProjectService projectService;
+
 	@ModelAttribute
 	public void getUserDetails(Principal p, Model m) {
 		if (p != null) {
@@ -55,8 +60,6 @@ public class AdminController {
 		List<Category> allActiveCategory = categoryService.getAllActiveCategory();
 		m.addAttribute("categorys", allActiveCategory);
 	}
-
-
 
 	@GetMapping("/")
 	public String index() {
@@ -71,15 +74,21 @@ public class AdminController {
 	}
 
 	@GetMapping("/category")
-	public String category(Model m) {
-		m.addAttribute("categorys", categoryService.getAllCategory());
+	public String category(Model m, @RequestParam(name = "pageNo", defaultValue = "0") Integer pageNo,
+			@RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize) {
+		// m.addAttribute("categorys", categoryService.getAllCategory());
+		Page<Category> page = categoryService.getAllCategorPagination(pageNo, pageSize);
+		List<Category> categorys = page.getContent();
+		m.addAttribute("categorys", categorys);
+
+		m.addAttribute("pageNo", page.getNumber());
+		m.addAttribute("pageSize", pageSize);
+		m.addAttribute("totalElements", page.getTotalElements());
+		m.addAttribute("totalPages", page.getTotalPages());
+		m.addAttribute("isFirst", page.isFirst());
+		m.addAttribute("isLast", page.isLast());
 
 		return "admin/category";
-	}
-	
-	@GetMapping("/user")
-	public String user() {
-		return "admin/user";
 	}
 
 	@PostMapping("/saveCategory")
@@ -199,12 +208,36 @@ public class AdminController {
 		return "redirect:/admin/loadAddProduct";
 	}
 
-	@GetMapping("/products") 
-	public String loadViewProduct(Model m) { 
-	  m.addAttribute("products",  productService.getAllProducts());
-	 
-	  return "admin/products";
-	  }
+	@GetMapping("/products")
+	public String loadViewProduct(Model m, @RequestParam(defaultValue = "") String ch,
+			@RequestParam(name = "pageNo", defaultValue = "0") Integer pageNo,
+			@RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize) {
+
+//		List<Product> products = null;
+//		if (ch != null && ch.length() > 0) {
+//			products = productService.searchProduct(ch);
+//		} else {
+//			products = productService.getAllProducts();
+//		}
+//		m.addAttribute("products", products);
+
+		Page<Product> page = null;
+		if (ch != null && ch.length() > 0) {
+			page = productService.searchProductPagination(pageNo, pageSize, ch);
+		} else {
+			page = productService.getAllProductsPagination(pageNo, pageSize);
+		}
+		m.addAttribute("products", page.getContent());
+
+		m.addAttribute("pageNo", page.getNumber());
+		m.addAttribute("pageSize", pageSize);
+		m.addAttribute("totalElements", page.getTotalElements());
+		m.addAttribute("totalPages", page.getTotalPages());
+		m.addAttribute("isFirst", page.isFirst());
+		m.addAttribute("isLast", page.isLast());
+
+		return "admin/products";
+	}
 
 	@GetMapping("/deleteProduct/{id}")
 	public String deleteProduct(@PathVariable int id, HttpSession session) {
@@ -223,6 +256,7 @@ public class AdminController {
 		m.addAttribute("categories", categoryService.getAllCategory());
 		return "admin/edit_product";
 	}
+
 	@PostMapping("/updateProduct")
 	public String updateProduct(@ModelAttribute Product product, @RequestParam("file") MultipartFile image,
 			HttpSession session, Model m) {
@@ -238,6 +272,100 @@ public class AdminController {
 			}
 		}
 		return "redirect:/admin/editProduct/" + product.getId();
+	}
+
+	@GetMapping("/users")
+	public String getAllUsers(Model m) {
+		List<UserDtls> users = userService.getUsers("ROLE_USER");
+		m.addAttribute("users", users);
+		return "/admin/users";
+	}
+
+	@GetMapping("/updateSts")
+	public String updateUserAccountStatus(@RequestParam Boolean status, @RequestParam Integer id, HttpSession session) {
+		Boolean f = userService.updateAccountStatus(id, status);
+		if (f) {
+			session.setAttribute("succMsg", "Account Status Updated");
+		} else {
+			session.setAttribute("errorMsg", "Something wrong on server");
+		}
+		return "redirect:/admin/users";
+	}
+
+	@GetMapping("/loadAddProject")
+	public String loadAddProject(Model m) {
+		List<Category> categories = categoryService.getAllCategory();
+		m.addAttribute("categories", categories);
+		return "admin/add_project";
+	}
+
+	@PostMapping("/saveProject")
+	public String saveProject(@ModelAttribute Project project, @RequestParam("file") MultipartFile image,
+			HttpSession session) throws IOException {
+		String imageName = image.isEmpty() ? "default.jpg" : image.getOriginalFilename();
+
+		project.setImage(imageName);
+		project.setDiscount(0);
+		project.setDiscountPrice(project.getPrice());
+		Project savedProject = projectService.saveProject(project);
+
+		if (!ObjectUtils.isEmpty(savedProject)) {
+
+			File saveFile = new ClassPathResource("static/img").getFile();
+
+			Path path = Paths.get(saveFile.getAbsolutePath() + File.separator + "project_img" + File.separator
+					+ image.getOriginalFilename());
+
+			// System.out.println(path);
+			Files.copy(image.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
+
+			session.setAttribute("succMsg", "Product Saved Success");
+		} else {
+			session.setAttribute("errorMsg", "something wrong on server");
+		}
+		return "redirect:/admin/loadAddProject";
+	}
+
+	@GetMapping("/projects")
+	public String loadViewProject(Model m) {
+
+		m.addAttribute("projects", projectService.getAllProjects());
+		return "admin/projects";
+	}
+
+	@GetMapping("/deleteProject/{id}")
+	public String deleteProject(@PathVariable int id, HttpSession session) {
+		Boolean deleteProject = projectService.deleteProject(id);
+		if (deleteProject) {
+			session.setAttribute("succMsg", "Product delete success");
+		} else {
+			session.setAttribute("errorMsg", "Something wrong on server");
+		}
+		return "redirect:/admin/projects";
+	}
+
+	@GetMapping("/editProject/{id}")
+	public String editProject(@PathVariable int id, Model m) {
+		m.addAttribute("project", projectService.getProjectById(id));
+		m.addAttribute("categories", categoryService.getAllCategory());
+		return "admin/edit_project";
+	}
+
+	@PostMapping("/updateProject")
+	public String updateProject(@ModelAttribute Project project, @RequestParam("file") MultipartFile image,
+			HttpSession session, Model m) {
+
+		if (project.getDiscount() < 0 || project.getDiscount() > 100) {
+			session.setAttribute("errorMsg", "invalid Discount");
+		} else {
+			Project updateProject = projectService.updateProject(project, image);
+			if (!ObjectUtils.isEmpty(updateProject)) {
+				session.setAttribute("succMsg", "Project update success");
+			} else {
+				session.setAttribute("errorMsg", "Something wrong on server");
+			}
+		}
+		return "redirect:/admin/editProject/" + project.getId();
 	}
 
 }

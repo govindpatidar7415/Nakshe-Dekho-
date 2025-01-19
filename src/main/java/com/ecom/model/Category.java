@@ -15,14 +15,14 @@ import lombok.Setter;
 @Entity
 public class Category {
 
-	private int id;
+	private Integer id;
 	private String name;
 	private String imageName;
 	private Boolean isActive;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	public int getId() {
+	public Integer  getId() {
 	    return id; // Correct value return kar raha hai
 	}
 

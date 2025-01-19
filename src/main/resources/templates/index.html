@@ -1,10 +1,11 @@
+
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org"
 	th:replace="base::layout(~{::section})">
 
 <head>
 <meta charset="utf-8">
-<title>Nakshe Dekho</title>
+<title>Nakshe Dekho.com</title>
 </head>
 <body>
 	<section>
@@ -23,7 +24,7 @@
 									Interior Design</h4>
 								<h3 class="display-3 text-white mb-md-4">Make Your Home
 									Better</h3>
-								 <a href="products"
+								<a href="products"
 									class="btn btn-primary py-md-3 px-md-5 mt-2 mt-md-4"> More
 									PLAN'S</a>
 							</div>
@@ -39,9 +40,7 @@
 									Interior Design</h4>
 								<h3 class="display-3 text-white mb-md-4">Stay At Home In
 									Peace</h3>
-								<a href="service"
-									class="btn btn-primary py-md-3 px-md-5 mt-2 mt-md-4">Service's
-									More</a>
+
 							</div>
 						</div>
 					</div>
@@ -71,19 +70,14 @@
 							class="d-flex flex-column align-items-center justify-content-center bg-primary h-100 py-5 px-3">
 							<i
 								class="flaticon-brickwall display-1 font-weight-normal text-secondary mb-3"></i>
-							<h4 class="display-3 mb-3">25+</h4>
+							<h4 class="display-3 mb-3">10+</h4>
 							<h1 class="m-0">Years Experience</h1>
 						</div>
 					</div>
 					<div class="col-lg-7 m-0 my-lg-5 pt-5 pb-5 pb-lg-2 pl-lg-5">
-						<h6 class="text-primary font-weight-normal text-uppercase mb-3">Learn
-							About Us</h6>
 						<h1 class="mb-4 section-title">Meet The most reliable and
 							affordable Construction Design and Drawings provider</h1>
-						<p>Invidunt lorem justo sanctus clita. Erat lorem labore ea,
-							justo dolor lorem ipsum ut sed eos, ipsum et dolor kasd sit ea
-							justo. Erat justo sed sed diam. Ea et erat ut sed diam sea ipsum
-							est dolor</p>
+
 						<div class="row py-2">
 							<div class="col-sm-6">
 								<div class="d-flex align-items-center mb-4">
@@ -130,33 +124,27 @@
 							Awesome Services</h6>
 						<h1 class="mb-4 section-title">Awesome Interior Designing
 							Services For Your Home</h1>
-						<p>Invidunt lorem justo clita. Erat lorem labore ea, justo
-							dolor lorem ipsum ut sed eos, ipsum et dolor kasd sit ea justo.
-							Erat justo sed sed diam. Ea et erat ut sed diam sea ipsum</p>
-						<a href="" class="btn btn-primary mt-3 py-2 px-4">View More</a>
+						<p>Our interior design projects blend aesthetics with
+							functionality, spanning residential and commercial spaces.
+							Residential designs focus on personalized comfort, while
+							commercial projects emphasize efficiency, brand identity, and
+							enhancing productivity and customer experience.</p>
+						<a href="products" class="btn btn-primary mt-3 py-2 px-4">View
+							More</a>
 					</div>
 					<div class="col-lg-6 p-0 pt-5 pt-lg-0">
 						<div class="owl-carousel service-carousel position-relative">
-							<div class="d-flex flex-column text-center bg-light mx-3 p-4">
-								<h3
-									class="flaticon-bedroom display-3 font-weight-normal text-primary mb-3"></h3>
-								<h5 class="mb-3">Bedroom Design</h5>
-								<p class="m-0">Diam amet eos at no eos sit lorem, amet rebum
-									ipsum clita stet, diam sea est diam eos</p>
-							</div>
-							<div class="d-flex flex-column text-center bg-light mx-3 p-4">
-								<h3
-									class="flaticon-kitchen display-3 font-weight-normal text-primary mb-3"></h3>
-								<h5 class="mb-3">Kitchen Design</h5>
-								<p class="m-0">Diam amet eos at no eos sit lorem, amet rebum
-									ipsum clita stet, diam sea est diam eos</p>
-							</div>
-							<div class="d-flex flex-column text-center bg-light mx-3 p-4">
-								<h3
-									class="flaticon-bathroom display-3 font-weight-normal text-primary mb-3"></h3>
-								<h5 class="mb-3">Bathroom Design</h5>
-								<p class="m-0">Diam amet eos at no eos sit lorem, amet rebum
-									ipsum clita stet, diam sea est diam eos</p>
+							<!-- Dynamically Generated Product Cards -->
+							<div class="d-flex flex-column text-center bg-light mx-3 p-4"
+								th:each="p:${products}">
+								<img alt="Product Image"
+									th:src="@{'img/product_img/'+${p.image}}" class="mx-auto mb-3"
+									width="65%" height="140px">
+								<h5 class="mb-3">[[${p.title}]]</h5>
+								<p class="m-0">
+									<a th:href="@{'/product/'+${p.id}}"
+										class="text-decoration-none text-primary">View Service's</a>
+								</p>
 							</div>
 						</div>
 					</div>
@@ -173,15 +161,21 @@
 					<div class="col-lg-7 mt-5 py-5 pr-lg-5">
 						<h6 class="text-primary font-weight-normal text-uppercase mb-3">Why
 							Choose Us?</h6>
-						<h1 class="mb-4 section-title">25+ Years Experience In The
+						<h1 class="mb-4 section-title">10+ Years Experience In The
 							Interior Design Industry</h1>
-						<p class="mb-4">Dolores lorem lorem ipsum sit et ipsum. Sadip
-							sea amet diam dolore sed et. Sit rebum labore sit sit ut vero no
-							sit. Et elitr stet dolor sed sit et sed ipsum et kasd ut. Erat
-							duo eos et erat sed diam duo</p>
+						<p class="mb-4">At NaskheDekho.com, we specialize in
+							delivering exceptionally detailed designs and precise
+							architectural drawings that bring your vision to life with
+							accuracy and sophistication. Our commitment to excellence ensures
+							that every project, whether residential or commercial, is
+							meticulously planned and executed. We focus on the finer details
+							that make a significant difference in the quality, functionality,
+							and aesthetics of your space. With our expertise, you can trust
+							that your design will not only meet your expectations but exceed
+							them, providing lasting value and unparalleled craftsmanship</p>
 						<ul class="list-inline">
 							<li><h5>
-									<i class="far fa-check-square text-primary mr-3"></i>25+ Years
+									<i class="far fa-check-square text-primary mr-3"></i>10+ Years
 									Experience
 								</h5></li>
 							<li><h5>
@@ -223,127 +217,27 @@
 						<ul class="list-inline mb-4" id="portfolio-flters">
 							<li class="btn btn-outline-primary m-1 active" data-filter="*">All</li>
 							<li class="btn btn-outline-primary m-1" data-filter=".first">Complete</li>
-							<li class="btn btn-outline-primary m-1" data-filter=".second">Running</li>
-							<li class="btn btn-outline-primary m-1" data-filter=".third">Upcoming</li>
 						</ul>
 					</div>
 				</div>
 				<div class="row mx-1 portfolio-container">
-					<div class="col-lg-4 col-md-6 col-sm-12 p-0 portfolio-item first">
+					<div class="col-lg-4 col-md-6 col-sm-12 p-0 portfolio-item first"
+						th:each="p : ${projects}">
 						<div class="position-relative overflow-hidden">
 							<div
 								class="portfolio-img d-flex align-items-center justify-content-center">
-								<img class="img-fluid" src="img/portfolio-1.jpg" alt="">
+								<img class="img-fluid"
+									th:src="@{'img/project_img/' + ${p.image}}" alt="Product Image">
 							</div>
 							<div
 								class="portfolio-text bg-secondary d-flex flex-column align-items-center justify-content-center">
-								<h4 class="text-white mb-4">Project Name</h4>
+								<h4 class="text-white mb-4">[[${p.title}]]</h4>
 								<div class="d-flex align-items-center justify-content-center">
-									<a class="btn btn-outline-primary m-1" href=""> <i
-										class="fa fa-link"></i>
+									<a class="btn btn-outline-primary m-1"
+										th:href="@{'/project/' + ${p.id}}"> <i class="fa fa-link"></i>
 									</a> <a class="btn btn-outline-primary m-1"
-										href="img/portfolio-1.jpg" data-lightbox="portfolio"> <i
-										class="fa fa-eye"></i>
-									</a>
-								</div>
-							</div>
-						</div>
-					</div>
-					<div class="col-lg-4 col-md-6 col-sm-12 p-0 portfolio-item second">
-						<div class="position-relative overflow-hidden">
-							<div
-								class="portfolio-img d-flex align-items-center justify-content-center">
-								<img class="img-fluid" src="img/portfolio-2.jpg" alt="">
-							</div>
-							<div
-								class="portfolio-text bg-secondary d-flex flex-column align-items-center justify-content-center">
-								<h4 class="text-white mb-4">Project Name</h4>
-								<div class="d-flex align-items-center justify-content-center">
-									<a class="btn btn-outline-primary m-1" href=""> <i
-										class="fa fa-link"></i>
-									</a> <a class="btn btn-outline-primary m-1"
-										href="img/portfolio-2.jpg" data-lightbox="portfolio"> <i
-										class="fa fa-eye"></i>
-									</a>
-								</div>
-							</div>
-						</div>
-					</div>
-					<div class="col-lg-4 col-md-6 col-sm-12 p-0 portfolio-item third">
-						<div class="position-relative overflow-hidden">
-							<div
-								class="portfolio-img d-flex align-items-center justify-content-center">
-								<img class="img-fluid" src="img/portfolio-3.jpg" alt="">
-							</div>
-							<div
-								class="portfolio-text bg-secondary d-flex flex-column align-items-center justify-content-center">
-								<h4 class="text-white mb-4">Project Name</h4>
-								<div class="d-flex align-items-center justify-content-center">
-									<a class="btn btn-outline-primary m-1" href=""> <i
-										class="fa fa-link"></i>
-									</a> <a class="btn btn-outline-primary m-1"
-										href="img/portfolio-3.jpg" data-lightbox="portfolio"> <i
-										class="fa fa-eye"></i>
-									</a>
-								</div>
-							</div>
-						</div>
-					</div>
-					<div class="col-lg-4 col-md-6 col-sm-12 p-0 portfolio-item first">
-						<div class="position-relative overflow-hidden">
-							<div
-								class="portfolio-img d-flex align-items-center justify-content-center">
-								<img class="img-fluid" src="img/portfolio-4.jpg" alt="">
-							</div>
-							<div
-								class="portfolio-text bg-secondary d-flex flex-column align-items-center justify-content-center">
-								<h4 class="text-white mb-4">Project Name</h4>
-								<div class="d-flex align-items-center justify-content-center">
-									<a class="btn btn-outline-primary m-1" href=""> <i
-										class="fa fa-link"></i>
-									</a> <a class="btn btn-outline-primary m-1"
-										href="img/portfolio-4.jpg" data-lightbox="portfolio"> <i
-										class="fa fa-eye"></i>
-									</a>
-								</div>
-							</div>
-						</div>
-					</div>
-					<div class="col-lg-4 col-md-6 col-sm-12 p-0 portfolio-item second">
-						<div class="position-relative overflow-hidden">
-							<div
-								class="portfolio-img d-flex align-items-center justify-content-center">
-								<img class="img-fluid" src="img/portfolio-5.jpg" alt="">
-							</div>
-							<div
-								class="portfolio-text bg-secondary d-flex flex-column align-items-center justify-content-center">
-								<h4 class="text-white mb-4">Project Name</h4>
-								<div class="d-flex align-items-center justify-content-center">
-									<a class="btn btn-outline-primary m-1" href=""> <i
-										class="fa fa-link"></i>
-									</a> <a class="btn btn-outline-primary m-1"
-										href="img/portfolio-5.jpg" data-lightbox="portfolio"> <i
-										class="fa fa-eye"></i>
-									</a>
-								</div>
-							</div>
-						</div>
-					</div>
-					<div class="col-lg-4 col-md-6 col-sm-12 p-0 portfolio-item third">
-						<div class="position-relative overflow-hidden">
-							<div
-								class="portfolio-img d-flex align-items-center justify-content-center">
-								<img class="img-fluid" src="img/portfolio-6.jpg" alt="">
-							</div>
-							<div
-								class="portfolio-text bg-secondary d-flex flex-column align-items-center justify-content-center">
-								<h4 class="text-white mb-4">Project Name</h4>
-								<div class="d-flex align-items-center justify-content-center">
-									<a class="btn btn-outline-primary m-1" href=""> <i
-										class="fa fa-link"></i>
-									</a> <a class="btn btn-outline-primary m-1"
-										href="img/portfolio-6.jpg" data-lightbox="portfolio"> <i
-										class="fa fa-eye"></i>
+										th:href="@{'img/project_img/' + ${p.image}}"
+										data-lightbox="portfolio"> <i class="fa fa-eye"></i>
 									</a>
 								</div>
 							</div>
@@ -376,13 +270,7 @@
 										src="/img/WhatsApp Image 2024-09-11 at 9.2.jpg" alt="">
 									<div
 										class="team-social d-flex align-items-center justify-content-center w-100 h-100 position-absolute">
-										<a class="btn btn-outline-primary text-center mr-2 px-0"
-											style="width: 38px; height: 38px;" href="#"><i
-											class="fab fa-twitter"></i></a> <a
-											class="btn btn-outline-primary text-center mr-2 px-0"
-											style="width: 38px; height: 38px;" href="#"><i
-											class="fab fa-facebook-f"></i></a> <a
-											class="btn btn-outline-primary text-center px-0"
+										<a class="btn btn-outline-primary text-center px-0"
 											style="width: 38px; height: 38px;" href="#"><i
 											class="fab fa-linkedin-in"></i></a>
 									</div>
@@ -401,13 +289,7 @@
 										src="/img/WhatsApp Image 2024-09-11 at 9.2 (1).jpg" alt="">
 									<div
 										class="team-social d-flex align-items-center justify-content-center w-100 h-100 position-absolute">
-										<a class="btn btn-outline-primary text-center mr-2 px-0"
-											style="width: 38px; height: 38px;" href="#"><i
-											class="fab fa-twitter"></i></a> <a
-											class="btn btn-outline-primary text-center mr-2 px-0"
-											style="width: 38px; height: 38px;" href="#"><i
-											class="fab fa-facebook-f"></i></a> <a
-											class="btn btn-outline-primary text-center px-0"
+										<a class="btn btn-outline-primary text-center px-0"
 											style="width: 38px; height: 38px;" href="#"><i
 											class="fab fa-linkedin-in"></i></a>
 									</div>
@@ -425,13 +307,7 @@
 										src="/img/WhatsApp Image 2024-09-11 at 9.2 (2).jpg" alt="">
 									<div
 										class="team-social d-flex align-items-center justify-content-center w-100 h-100 position-absolute">
-										<a class="btn btn-outline-primary text-center mr-2 px-0"
-											style="width: 38px; height: 38px;" href="#"><i
-											class="fab fa-twitter"></i></a> <a
-											class="btn btn-outline-primary text-center mr-2 px-0"
-											style="width: 38px; height: 38px;" href="#"><i
-											class="fab fa-facebook-f"></i></a> <a
-											class="btn btn-outline-primary text-center px-0"
+										<a class="btn btn-outline-primary text-center px-0"
 											style="width: 38px; height: 38px;" href="#"><i
 											class="fab fa-linkedin-in"></i></a>
 									</div>
@@ -449,13 +325,7 @@
 										src="/img/WhatsApp Image 2024-09-11 at 9.2 (3).jpg" alt="">
 									<div
 										class="team-social d-flex align-items-center justify-content-center w-100 h-100 position-absolute">
-										<a class="btn btn-outline-primary text-center mr-2 px-0"
-											style="width: 38px; height: 38px;" href="#"><i
-											class="fab fa-twitter"></i></a> <a
-											class="btn btn-outline-primary text-center mr-2 px-0"
-											style="width: 38px; height: 38px;" href="#"><i
-											class="fab fa-facebook-f"></i></a> <a
-											class="btn btn-outline-primary text-center px-0"
+										<a class="btn btn-outline-primary text-center px-0"
 											style="width: 38px; height: 38px;" href="#"><i
 											class="fab fa-linkedin-in"></i></a>
 									</div>
@@ -478,13 +348,7 @@
 										src="/img/WhatsApp Image 2024-09-11 at 9.2 (4).jpg" alt="">
 									<div
 										class="team-social d-flex align-items-center justify-content-center w-100 h-100 position-absolute">
-										<a class="btn btn-outline-primary text-center mr-2 px-0"
-											style="width: 38px; height: 38px;" href="#"><i
-											class="fab fa-twitter"></i></a> <a
-											class="btn btn-outline-primary text-center mr-2 px-0"
-											style="width: 38px; height: 38px;" href="#"><i
-											class="fab fa-facebook-f"></i></a> <a
-											class="btn btn-outline-primary text-center px-0"
+										<a class="btn btn-outline-primary text-center px-0"
 											style="width: 38px; height: 38px;" href="#"><i
 											class="fab fa-linkedin-in"></i></a>
 									</div>
@@ -505,15 +369,7 @@
 										src="/img/WhatsApp Image 2024-09-11 at 9.2 (5).jpg" alt="">
 									<div
 										class="team-social d-flex align-items-center justify-content-center w-100 h-100 position-absolute">
-										<a class="btn btn-outline-primary text-center mr-2 px-0"
-											style="width: 38px; height: 38px;" href="#"><i
-											class="fab fa-twitter"></i></a> <a
-											class="btn btn-outline-primary text-center mr-2 px-0"
-											style="width: 38px; height: 38px;" href="#"><i
-											class="fab fa-facebook-f"></i></a> <a
-											class="btn btn-outline-primary text-center px-0"
-											style="width: 38px; height: 38px;" href="#"><i
-											class="fab fa-linkedin-in"></i></a>
+
 									</div>
 								</div>
 								<div class="d-flex flex-column bg-secondary text-center py-3">
@@ -531,15 +387,7 @@
 										src="/img/WhatsApp Image 2024-09-11 at 9.2 (6).jpg" alt="">
 									<div
 										class="team-social d-flex align-items-center justify-content-center w-100 h-100 position-absolute">
-										<a class="btn btn-outline-primary text-center mr-2 px-0"
-											style="width: 38px; height: 38px;" href="#"><i
-											class="fab fa-twitter"></i></a> <a
-											class="btn btn-outline-primary text-center mr-2 px-0"
-											style="width: 38px; height: 38px;" href="#"><i
-											class="fab fa-facebook-f"></i></a> <a
-											class="btn btn-outline-primary text-center px-0"
-											style="width: 38px; height: 38px;" href="#"><i
-											class="fab fa-linkedin-in"></i></a>
+
 									</div>
 								</div>
 								<div class="d-flex flex-column bg-secondary text-center py-3">
@@ -557,13 +405,7 @@
 										src="/img/WhatsApp Image 2024-09-11 at 9.2 (7).jpg" alt="">
 									<div
 										class="team-social d-flex align-items-center justify-content-center w-100 h-100 position-absolute">
-										<a class="btn btn-outline-primary text-center mr-2 px-0"
-											style="width: 38px; height: 38px;" href="#"><i
-											class="fab fa-twitter"></i></a> <a
-											class="btn btn-outline-primary text-center mr-2 px-0"
-											style="width: 38px; height: 38px;" href="#"><i
-											class="fab fa-facebook-f"></i></a> <a
-											class="btn btn-outline-primary text-center px-0"
+										<a class="btn btn-outline-primary text-center px-0"
 											style="width: 38px; height: 38px;" href="#"><i
 											class="fab fa-linkedin-in"></i></a>
 									</div>
@@ -583,15 +425,7 @@
 										src="/img/WhatsApp Image 2024-09-11 at 9.2 (8).jpg" alt="">
 									<div
 										class="team-social d-flex align-items-center justify-content-center w-100 h-100 position-absolute">
-										<a class="btn btn-outline-primary text-center mr-2 px-0"
-											style="width: 38px; height: 38px;" href="#"><i
-											class="fab fa-twitter"></i></a> <a
-											class="btn btn-outline-primary text-center mr-2 px-0"
-											style="width: 38px; height: 38px;" href="#"><i
-											class="fab fa-facebook-f"></i></a> <a
-											class="btn btn-outline-primary text-center px-0"
-											style="width: 38px; height: 38px;" href="#"><i
-											class="fab fa-linkedin-in"></i></a>
+
 									</div>
 								</div>
 								<div class="d-flex flex-column bg-secondary text-center py-3">
@@ -609,15 +443,7 @@
 										src="/img/WhatsApp Image 2024-09-11 at 9.2 (9).jpg" alt="">
 									<div
 										class="team-social d-flex align-items-center justify-content-center w-100 h-100 position-absolute">
-										<a class="btn btn-outline-primary text-center mr-2 px-0"
-											style="width: 38px; height: 38px;" href="#"><i
-											class="fab fa-twitter"></i></a> <a
-											class="btn btn-outline-primary text-center mr-2 px-0"
-											style="width: 38px; height: 38px;" href="#"><i
-											class="fab fa-facebook-f"></i></a> <a
-											class="btn btn-outline-primary text-center px-0"
-											style="width: 38px; height: 38px;" href="#"><i
-											class="fab fa-linkedin-in"></i></a>
+
 									</div>
 								</div>
 								<div class="d-flex flex-column bg-secondary text-center py-3">
@@ -635,15 +461,7 @@
 										src="/img/WhatsApp Image 2024-09-15 at 12..jpg" alt="">
 									<div
 										class="team-social d-flex align-items-center justify-content-center w-100 h-100 position-absolute">
-										<a class="btn btn-outline-primary text-center mr-2 px-0"
-											style="width: 38px; height: 38px;" href="#"><i
-											class="fab fa-twitter"></i></a> <a
-											class="btn btn-outline-primary text-center mr-2 px-0"
-											style="width: 38px; height: 38px;" href="#"><i
-											class="fab fa-facebook-f"></i></a> <a
-											class="btn btn-outline-primary text-center px-0"
-											style="width: 38px; height: 38px;" href="#"><i
-											class="fab fa-linkedin-in"></i></a>
+
 									</div>
 								</div>
 								<div class="d-flex flex-column bg-secondary text-center py-3">
@@ -661,15 +479,7 @@
 										src="/img/WhatsApp Image 2024-09-15 at 12. (1).jpg" alt="">
 									<div
 										class="team-social d-flex align-items-center justify-content-center w-100 h-100 position-absolute">
-										<a class="btn btn-outline-primary text-center mr-2 px-0"
-											style="width: 38px; height: 38px;" href="#"><i
-											class="fab fa-twitter"></i></a> <a
-											class="btn btn-outline-primary text-center mr-2 px-0"
-											style="width: 38px; height: 38px;" href="#"><i
-											class="fab fa-facebook-f"></i></a> <a
-											class="btn btn-outline-primary text-center px-0"
-											style="width: 38px; height: 38px;" href="#"><i
-											class="fab fa-linkedin-in"></i></a>
+
 									</div>
 								</div>
 								<div class="d-flex flex-column bg-secondary text-center py-3">
@@ -689,9 +499,37 @@
 		</div>
 		<!-- Team End -->
 
+		<!-- Blog Start -->
+		<div class="container-fluid bg-light pt-5">
+			<div class="container py-5">
+				<div class="row justify-content-center">
+					<div class="col-lg-6 col-md-8 col text-center mb-4">
+						<h6 class="text-primary font-weight-normal text-uppercase mb-3">Our
+							Services</h6>
+						<h1 class="mb-4">Explore The Latest Combo Plans</h1>
+					</div>
+				</div>
+				<div class="row pb-3">
+					<!-- Dynamically Generated Category Cards -->
+					<div class="col-md-4 mb-4" th:each="c:${category}">
+						<div class="card border-0 mb-2 shadow-sm p-3">
+							<img th:src="@{'img/category_img/'+${c.imageName}}"
+								class="card-img-top" alt="Category Image">
+							<div class="card-body bg-white text-center p-4">
+								<h5 class="m-0 mb-3 text-truncate">[[${c.name}]]</h5>
+								<a th:href="@{'/products?category='+${c.name}}"
+									class="btn btn-primary text-decoration-none"> View Services
+								</a>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- Blog End -->
 
 		<!-- Testimonial Start -->
-		<div class="container-fluid">
+		<!-- <div class="container-fluid">
 			<div class="container">
 				<div class="row">
 					<div class="col-md-7 py-5 pr-md-5">
@@ -740,85 +578,8 @@
 					</div>
 				</div>
 			</div>
-		</div>
+		</div> -->
 		<!-- Testimonial End -->
-
-
-		<!-- Blog Start -->
-		<div class="container-fluid bg-light pt-5">
-			<div class="container py-5">
-				<div class="row justify-content-center">
-					<div class="col-lg-6 col-md-8 col text-center mb-4">
-						<h6 class="text-primary font-weight-normal text-uppercase mb-3">Our
-							Blog</h6>
-						<h1 class="mb-4">Read The Latest News & Articles From Our
-							Blog</h1>
-					</div>
-				</div>
-				<div class="row pb-3">
-					<div class="col-md-4 mb-4">
-						<div class="card border-0 mb-2">
-							<img class="card-img-top" src="img/blog-1.jpg" alt="">
-							<div class="card-body bg-white p-4">
-								<div class="d-flex align-items-center mb-3">
-									<a class="btn btn-primary" href=""><i class="fa fa-link"></i></a>
-									<h5 class="m-0 ml-3 text-truncate">Diam amet eos at no eos</h5>
-								</div>
-								<p>Diam amet eos at no eos sit, amet rebum ipsum clita stet,
-									diam sea est diam eos, sit vero stet justo</p>
-								<div class="d-flex">
-									<small class="mr-3"><i class="fa fa-user text-primary"></i>
-										Admin</small> <small class="mr-3"><i
-										class="fa fa-folder text-primary"></i> Web Design</small> <small
-										class="mr-3"><i class="fa fa-comments text-primary"></i>
-										15</small>
-								</div>
-							</div>
-						</div>
-					</div>
-					<div class="col-md-4 mb-4">
-						<div class="card border-0 mb-2">
-							<img class="card-img-top" src="img/blog-2.jpg" alt="">
-							<div class="card-body bg-white p-4">
-								<div class="d-flex align-items-center mb-3">
-									<a class="btn btn-primary" href=""><i class="fa fa-link"></i></a>
-									<h5 class="m-0 ml-3 text-truncate">Diam amet eos at no eos</h5>
-								</div>
-								<p>Diam amet eos at no eos sit, amet rebum ipsum clita stet,
-									diam sea est diam eos, sit vero stet justo</p>
-								<div class="d-flex">
-									<small class="mr-3"><i class="fa fa-user text-primary"></i>
-										Admin</small> <small class="mr-3"><i
-										class="fa fa-folder text-primary"></i> Web Design</small> <small
-										class="mr-3"><i class="fa fa-comments text-primary"></i>
-										15</small>
-								</div>
-							</div>
-						</div>
-					</div>
-					<div class="col-md-4 mb-4">
-						<div class="card border-0 mb-2">
-							<img class="card-img-top" src="img/blog-3.jpg" alt="">
-							<div class="card-body bg-white p-4">
-								<div class="d-flex align-items-center mb-3">
-									<a class="btn btn-primary" href=""><i class="fa fa-link"></i></a>
-									<h5 class="m-0 ml-3 text-truncate">Diam amet eos at no eos</h5>
-								</div>
-								<p>Diam amet eos at no eos sit, amet rebum ipsum clita stet,
-									diam sea est diam eos, sit vero stet justo</p>
-								<div class="d-flex">
-									<small class="mr-3"><i class="fa fa-user text-primary"></i>
-										Admin</small> <small class="mr-3"><i
-										class="fa fa-folder text-primary"></i> Web Design</small> <small
-										class="mr-3"><i class="fa fa-comments text-primary"></i>
-										15</small>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
 	</section>
 </body>
 

@@ -3,6 +3,7 @@ package com.ecom.config;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -15,7 +16,9 @@ import org.springframework.security.web.authentication.AuthenticationSuccessHand
 public class SecurityConfig {
 	@Autowired
 	private AuthenticationSuccessHandler authenticationSuccessHandler;
-
+	@Autowired
+	@Lazy
+	private AuthFailureHandlerImpl authenticationFailureHandler;
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
@@ -34,21 +37,22 @@ public class SecurityConfig {
         return authenticationProvider;
     }
 
-    @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.csrf(csrf -> csrf.disable())
-                .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/admin/**").hasRole("ADMIN") // Admin URLs
-                        .requestMatchers("/user/**").hasRole("USER")   // User URLs
-                        .requestMatchers("/**").permitAll()           // Public URLs
-                )
-                .formLogin(form -> form
-                        .loginPage("/signin")
-                        .loginProcessingUrl("/login")
-                        //.defaultSuccessUrl("/") // Redirect after successful login
-				.successHandler(authenticationSuccessHandler))
 
-                .logout(logout -> logout.permitAll());
-        return http.build();
-    }
+	@Bean
+	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception
+	{
+		http.csrf(csrf->csrf.disable()).cors(cors->cors.disable())
+				.authorizeHttpRequests(req->req.requestMatchers("/user/**").hasRole("USER")
+				.requestMatchers("/admin/**").hasRole("ADMIN")
+				.requestMatchers("/**").permitAll())
+				.formLogin(form->form.loginPage("/signin")
+						.loginProcessingUrl("/login")
+//						.defaultSuccessUrl("/")
+						.failureHandler(authenticationFailureHandler)
+						.successHandler(authenticationSuccessHandler))
+				.logout(logout->logout.permitAll());
+		
+		return http.build();
+	}
+
 }
